@@ -25,6 +25,8 @@
 /* Begin PBXFileReference section */
 		B822D6AD2A7B460E001F4232 /* DijkstraPath */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DijkstraPath; sourceTree = BUILT_PRODUCTS_DIR; };
 		B822D6B02A7B460E001F4232 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		B822D6B92A7CE291001F4232 /* Input.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Input.txt; path = DijkstraPath/Input.txt; sourceTree = "<group>"; };
+		B822D6BA2A7FC69C001F4232 /* output.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = output.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +43,7 @@
 		B822D6A42A7B460E001F4232 = {
 			isa = PBXGroup;
 			children = (
+				B822D6B92A7CE291001F4232 /* Input.txt */,
 				B822D6AF2A7B460E001F4232 /* DijkstraPath */,
 				B822D6AE2A7B460E001F4232 /* Products */,
 			);
@@ -58,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				B822D6B02A7B460E001F4232 /* main.cpp */,
+				B822D6BA2A7FC69C001F4232 /* output.txt */,
 			);
 			path = DijkstraPath;
 			sourceTree = "<group>";
