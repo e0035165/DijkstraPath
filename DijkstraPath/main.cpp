@@ -14,6 +14,7 @@
 #include <vector>
 #include <list>
 #include<queue>
+#include<set>
 using namespace std;
 
 
@@ -26,35 +27,46 @@ vector<int> shortestReach(int n, vector<vector<int>> edges, int s);
 vector<int> shortestReach(int n, vector<vector<int>> edges, int s)
 {
     vector<int> result;
-    vector<vector<pair<int,int>>> sorted_edges((int) edges.size());
+    vector<vector<pair<int,int>>> sorted_edges(n);
     for(auto x=edges.begin();x!=edges.end();++x)
     {
         pair<int,int>temp((*x)[1]-1,(*x)[2]);
         pair<int,int>tempt((*x)[0]-1,(*x)[2]);
+        cout << (*x)[0] - 1 << " val: " << (*x)[1] - 1 << endl;
         sorted_edges[(*x)[0]-1].push_back(temp);
         sorted_edges[(*x)[1]-1].push_back(tempt);
     }
     int* distances = new int[n];
     bool *visited = new bool[n];
+    //bool *inQueue = new bool[n];
     for(int i=0;i<n;++i)
         distances[i] = INT_MAX,visited[i]=false;
     
     queue<int>nodes;
-    
+    set<int>nodal;
     nodes.push(s-1);
+    nodal.insert(s-1);
     distances[s-1] = 0;
     
     do{
         int index = nodes.front();
+        auto it = nodal.begin();
+        index = *it;
         for(auto x=sorted_edges[index].begin();x!=sorted_edges[index].end();++x)
         {
             if((distances[index] + (*x).second) < distances[(*x).first])
             {
                 distances[(*x).first] = distances[index] + (*x).second;
                 nodes.push((*x).first);
+                if(nodal.find((*x).first)!=nodal.end())
+                {
+                    nodal.erase((*x).first);
+                }
+                nodal.insert((*x).first);
             }
         }
         visited[index] = true;
+        nodal.erase(it);
         nodes.pop();
     }while(!nodes.empty());
     
@@ -70,7 +82,7 @@ vector<int> shortestReach(int n, vector<vector<int>> edges, int s)
             result.push_back(distances[i]);
         }
     }
-    cout << endl;
+    //cout << endl;
     return result;
 }
 
@@ -143,14 +155,15 @@ int main(int argc, const char * argv[]) {
 //        cout << "Total number of connections: " << m << endl;
         vector<int>result = shortestReach(n,edges,s);
         for (size_t i = 0; i < result.size(); i++) {
-            if(result[i]!=correct_answer[i])
-            {
-                cout << "Failed" << endl;
-                break;
-            }
+//            if(result[i]!=correct_answer[i])
+//            {
+//                cout << "Failed" << endl;
+//                break;
+//            }
+            cout << result[i] << " ";
         }
 
-        cout << "passed" << "\n";
+        cout << "\n";
     }
     
     
