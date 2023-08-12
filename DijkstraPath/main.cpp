@@ -27,49 +27,81 @@ vector<int> shortestReach(int n, vector<vector<int>> edges, int s);
 vector<int> shortestReach(int n, vector<vector<int>> edges, int s)
 {
     vector<int> result;
-    vector<vector<pair<int,int>>> sorted_edges(n);
+    //vector<vector<pair<int,int>>> sorted_edges(n);
+    vector<set<int>> sorted_edges(n);
+    int** adj_list = new int*[n];
+    for(int i=0;i<n;++i)
+    {
+        adj_list[i] = new int[n];
+    }
+    
+    for(int i=0;i<n;++i)
+    {
+        for(int j=0;j<n;++j)
+        {
+            adj_list[i][j] = INT_MAX;
+        }
+    }
+    
+    
     for(auto x=edges.begin();x!=edges.end();++x)
     {
-        pair<int,int>temp((*x)[1]-1,(*x)[2]);
-        pair<int,int>tempt((*x)[0]-1,(*x)[2]);
-        cout << (*x)[0] - 1 << " val: " << (*x)[1] - 1 << endl;
-        sorted_edges[(*x)[0]-1].push_back(temp);
-        sorted_edges[(*x)[1]-1].push_back(tempt);
+//        pair<int,int>temp((*x)[1]-1,(*x)[2]);
+//        pair<int,int>tempt((*x)[0]-1,(*x)[2]);
+        //cout << (*x)[0] - 1 << " val: " << (*x)[1] - 1 << endl;
+
+        
+        if((*x)[2] < adj_list[(*x)[0] - 1][(*x)[1] - 1])
+        {
+            adj_list[(*x)[0] - 1][(*x)[1] - 1] = (*x)[2];
+            sorted_edges[(*x)[0] - 1].insert((*x)[1] - 1);
+        }
+        
+        if((*x)[2] < adj_list[(*x)[1] - 1][(*x)[0] - 1])
+        {
+            adj_list[(*x)[1] - 1][(*x)[0] - 1] = (*x)[2];
+            sorted_edges[(*x)[1] - 1].insert((*x)[0] - 1);
+        }
+        
     }
     int* distances = new int[n];
     bool *visited = new bool[n];
-    //bool *inQueue = new bool[n];
+    
     for(int i=0;i<n;++i)
         distances[i] = INT_MAX,visited[i]=false;
     
     queue<int>nodes;
     set<int>nodal;
     nodes.push(s-1);
-    nodal.insert(s-1);
-    distances[s-1] = 0;
     
+    distances[s-1] = 0;
+    nodal.insert(s-1);
+//    do{
+//        int index = *(nodal.begin());
+//        for(auto x=sorted_edges[index].begin();x!=sorted_edges[index].end();++x)
+//        {
+//            if(distances[index] + adj_list[index][*x] < distances[*x])
+//            {
+//                distances[*x] = distances[index] + adj_list[index][*x];
+//                nodal.insert(*x);
+//            }
+//        }
+//        nodal.erase(nodal.begin());
+//    }while(!nodal.empty());
     do{
         int index = nodes.front();
-        auto it = nodal.begin();
-        index = *it;
         for(auto x=sorted_edges[index].begin();x!=sorted_edges[index].end();++x)
         {
-            if((distances[index] + (*x).second) < distances[(*x).first])
+            if((distances[index] + adj_list[index][*x]) < distances[(*x)])
             {
-                distances[(*x).first] = distances[index] + (*x).second;
-                nodes.push((*x).first);
-                if(nodal.find((*x).first)!=nodal.end())
-                {
-                    nodal.erase((*x).first);
-                }
-                nodal.insert((*x).first);
+                distances[*x] = distances[index] + adj_list[index][*x];
+                nodes.push((*x));
             }
         }
         visited[index] = true;
-        nodal.erase(it);
         nodes.pop();
     }while(!nodes.empty());
-    
+//
     delete [] visited;
     
     for(int i=0;i<n;++i)
@@ -155,15 +187,15 @@ int main(int argc, const char * argv[]) {
 //        cout << "Total number of connections: " << m << endl;
         vector<int>result = shortestReach(n,edges,s);
         for (size_t i = 0; i < result.size(); i++) {
-//            if(result[i]!=correct_answer[i])
-//            {
-//                cout << "Failed" << endl;
-//                break;
-//            }
-            cout << result[i] << " ";
+            if(result[i]!=correct_answer[i])
+            {
+                cout << "Failed" << endl;
+                break;
+            }
+            //cout << result[i] << " ";
         }
-
-        cout << "\n";
+        cout << "Passed" << endl;
+        //cout << "\n";
     }
     
     
